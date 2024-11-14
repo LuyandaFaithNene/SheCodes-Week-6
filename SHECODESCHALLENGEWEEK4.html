@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>City Search and Date Display</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    #date-time { margin-bottom: 20px; }
+    #search-result { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <!-- Feature #1: Display current date and time -->
+  <div id="date-time"></div>
+
+  <!-- Feature #2: Search bar for city name -->
+  <form id="city-form">
+    <input type="text" id="city-input" placeholder="Enter a city" required>
+    <button type="submit">Search</button>
+  </form>
+  
+  <!-- Display search result -->
+  <div id="search-result"></div>
+
+  <script>
+    // Feature #1: Display current date and time
+    function updateDateTime() {
+      const now = new Date();
+      const options = { weekday: 'long', hour: '2-digit', minute: '2-digit' };
+      const formattedDateTime = now.toLocaleDateString('en-US', options);
+      document.getElementById('date-time').textContent = formattedDateTime;
+    }
+
+    // Update the date and time immediately, then every minute
+    updateDateTime();
+    setInterval(updateDateTime, 60000);
+
+    // Feature #2: City search functionality
+    document.getElementById('city-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form from submitting normally
+      const city = document.getElementById('city-input').value;
+      document.getElementById('search-result').textContent = `You searched for: ${city}`;
+    });
+  </script>
+
+</body>
+</html>
