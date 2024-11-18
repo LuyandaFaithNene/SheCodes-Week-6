@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #83a4d4, #b6fbff);
+  text-align: center;
+  padding: 20px;
+  margin: 0;
+}
+
+.container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  color: #333;
+}
+
+.search-box {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#city {
+  padding: 10px;
+  width: 70%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#search-button {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#search-button:hover {
+  background-color: #45a049;
+}
+
+.weather-display {
+  display: none;
+  margin-top: 20px;
+}
+
+#weather-info img {
+  width: 50px;
+}
+
+footer {
+  margin-top: 20px;
+}
+
+footer a {
+  color: #007BFF;
+  text-decoration: none;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Weather App</h1>
+    <div class="search-box">
+      <input type="text" id="city" placeholder="Enter a city..." />
+      <button id="search-button">Search</button>
+    </div>
+    <div class="weather-display">
+      <h2 id="city-name"></h2>
+      <p id="weather-description"></p>
+      <div id="weather-info">
+        <h3 id="temperature"></h3>
+        <img id="weather-icon" alt="Weather Icon" />
+        <p>Humidity: <span id="humidity"></span>%</p>
+        <p>Wind Speed: <span id="wind-speed"></span> km/h</p>
+      </div>
+    </div>
+    <footer>
+      <p>Code on 
+        <a href="https://github.com/LuyandaFaithNene" target="_blank">GitHub</a>
+      </p>
+    </footer>
+  </div>
+  <script>
+    // Select elements
+const searchButton = document.getElementById("search-button");
+const cityInput = document.getElementById("city");
+const cityName = document.getElementById("city-name");
+const weatherDescription = document.getElementById("weather-description");
+const temperature = document.getElementById("temperature");
+const weatherIcon = document.getElementById("weather-icon");
+const humidity = document.getElementById("humidity");
+const windSpeed = document.getElementById("wind-speed");
+const weatherDisplay = document.querySelector(".weather-display");
+
+// API Configuration
+const API_KEY = "your_api_key"; // Replace with your OpenWeatherMap API key
+const API_URL = "https://api.openweathermap.org/data/2.5/weather";
+
+// Fetch weather data
+async function fetchWeather(city) {
+  try {
+    const response = await fetch(`${API_URL}?q=${city}&appid=${API_KEY}&units=metric`);
+    if (!response.ok) throw new Error("City not found");
+    const data = await response.json();
+
+    // Update DOM with weather data
+    cityName.textContent = data.name;
+    weatherDescription.textContent = data.weather[0].description;
+    temperature.textContent = `${Math.round(data.main.temp)}°C`;
+    weatherIcon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
+    humidity.textContent = data.main.humidity;
+    windSpeed.textContent = data.wind.speed.toFixed(1);
+    weatherDisplay.style.display = "block";
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+// Event Listener for Search
+searchButton.addEventListener("click", () => {
+  const city = cityInput.value.trim();
+  if (city) {
+    fetchWeather(city);
+  } else {
+    alert("Please enter a city name.");
+  }
+});
+
+  </script>
+</body>
+</html>
